@@ -16,7 +16,7 @@ Variables for this
 
 | variable | default value in defaults/main.yml | description |
 | -------- | ---------------------------------- | ----------- |
-| role_ubuntu-clean_enabled | False | determine whether role is enabled (True) or not (False) |
+| role_ubuntu_clean_enabled | False | determine whether role is enabled (True) or not (False) |
 
 ## Dependencies
 

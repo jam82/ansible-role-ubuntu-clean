@@ -47,4 +47,4 @@ See LICENSE file in repository.
 
 ## References
 
-[ArchWiki](https://wiki.archlinux.org/)
+none.

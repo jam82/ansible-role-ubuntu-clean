@@ -1,0 +1,66 @@
+---
+# role: ansible-role-ubuntu-clean
+# file: molecule/all/molecule.yml
+
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+  options:
+    config-file: molecule/shared/yamllint.yml
+platforms:
+  - name: ubuntu-clean-ubuntu1604
+    image: "jam82/ubuntu-molecule:16.04"
+    command: "/lib/systemd/systemd"
+    pre_build_image: True
+    privileged: True
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - name: ubuntu-clean-ubuntu1804
+    image: "jam82/ubuntu-molecule:18.04"
+    command: "/lib/systemd/systemd"
+    pre_build_image: True
+    privileged: True
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - name: ubuntu-clean-ubuntu
+    image: "jam82/ubuntu-molecule:latest"
+    command: "/lib/systemd/systemd"
+    pre_build_image: True
+    privileged: True
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+provisioner:
+  name: ansible
+  log: True
+  lint:
+    name: ansible-lint
+  playbooks:
+    converge: ../shared/playbook.yml
+  inventory:
+    group_vars:
+      all:
+        role_ubuntu-clean_enabled: True
+scenario:
+  name: all
+  test_sequence:
+    - lint
+    - destroy
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - verify
+    - destroy
+verifier:
+  name: testinfra
+  env:
+    PYTHONWARNINGS: "ignore"
+  directory: ../tests
+  options:
+    v: True
+    sudo: True
+  lint:
+    name: flake8

@@ -1,0 +1,49 @@
+---
+# role: ansible-role-ubuntu-clean
+# file: molecule/vbox/molecule.yml
+
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+    type: virtualbox
+    options:
+      gui: True
+      memory: 4096
+      cpus: 2
+      provision: True
+lint:
+  name: yamllint
+  options:
+    config-file: molecule/shared/yamllint.yml
+platforms:
+  - name: ubuntu-clean-ubuntu1604
+    box: "ubuntu/xenial64"
+  - name: ubuntu-clean-ubuntu1804
+    box: "ubuntu/bionic64"
+provisioner:
+  name: ansible
+  log: True
+  lint:
+    name: ansible-lint
+  playbooks:
+    prepare: prepare.yml
+    converge: ../shared/playbook.yml
+  inventory:
+    group_vars:
+      all:
+        role_ubuntu-clean_enabled: True
+scenario:
+  name: vbox
+verifier:
+  name: testinfra
+  env:
+    PYTHONWARNINGS: "ignore"
+  directory: ../tests
+  options:
+    v: True
+    sudo: True
+  lint:
+    name: flake8

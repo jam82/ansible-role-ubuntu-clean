@@ -1,0 +1,7 @@
+---
+# role: ansible-role-ubuntu-clean
+# file: tasks/main.yml
+
+- name: Import tasks for role ansible-role-ubuntu-clean
+  import_tasks: tasks.yml
+  when: role_ubuntu_clean_enabled | bool
